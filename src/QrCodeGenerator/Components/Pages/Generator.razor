@@ -4,65 +4,77 @@
 
 <div class="max-w-2xl mx-auto px-4 py-8 space-y-6 text-gray-800">
     <h1 class="text-3xl font-semibold text-center">QR Code Generator</h1>
+    <div class="relative">
+        <label class="block mb-2 text-sm font-medium">QR Code Type</label>
 
-   <div class="relative">
-    <label class="block mb-2 text-sm font-medium">QR Code Type</label>
-    <button @onclick="ToggleDropdown" class="w-full flex items-center justify-between px-3 py-2 border border-gray-300 rounded-md bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500">
-        <span class="flex items-center gap-2">
-            @GetIcon(selectedType)
-            <span>@selectedType</span>
-        </span>
-        <svg class="w-4 h-4 text-gray-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
-        </svg>
-    </button>
+        <button @onclick="ToggleDropdown"
+            class="w-full flex items-center justify-between px-3 py-2 border border-gray-300 rounded-md bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500">
+            <span class="flex items-center gap-2">
+                @_selectedOption?.Icon
+                <span>@_selectedOption?.DisplayName</span>
+            </span>
+            <svg class="w-4 h-4 text-gray-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+            </svg>
+        </button>
 
-    @if (_dropdownOpen)
-    {
-        <ul class="absolute z-10 mt-2 w-full bg-white border border-gray-200 rounded-md shadow-md max-h-60 overflow-auto">
-            @foreach (QRCodeType type in Enum.GetValues(typeof(QRCodeType)))
-            {
-                <li class="px-4 py-2 hover:bg-gray-100 cursor-pointer flex items-center gap-2"
-                    @onclick="@(() => SelectType(type))">
-                    @GetIcon(type)
-                    <span>@type</span>
-                </li>
-            }
-        </ul>
-    }
-</div>
+        @if (_dropdownOpen)
+        {
+            <ul
+                class="absolute z-20 mt-1 w-full bg-white border border-gray-200 rounded-md shadow-lg max-h-60 overflow-auto">
+                @foreach (var option in _options)
+                {
+                    <li class="flex items-center gap-2 px-4 py-2 cursor-pointer hover:bg-gray-100"
+                        @onclick="() => SelectType(option)">
+                        @option.Icon
+                        <span>@option.DisplayName</span>
+                    </li>
+                }
+            </ul>
+        }
+    </div>
 
 
     <div class="space-y-3">
-        @switch (selectedType)
+        @switch (_selectedOption?.Type)
         {
             case QRCodeType.Url:
                 <input class="w-full px-3 py-2 border border-gray-300 rounded-md" placeholder="Enter URL" @bind="urlData.Url" />
                 break;
             case QRCodeType.Sms:
-                <input class="w-full px-3 py-2 border border-gray-300 rounded-md" placeholder="Phone Number" @bind="smsData.Number" />
-                <input class="w-full px-3 py-2 border border-gray-300 rounded-md" placeholder="Message" @bind="smsData.Message" />
+                <input class="w-full px-3 py-2 border border-gray-300 rounded-md" placeholder="Phone Number"
+                    @bind="smsData.Number" />
+                <input class="w-full px-3 py-2 border border-gray-300 rounded-md" placeholder="Message"
+                    @bind="smsData.Message" />
                 break;
             case QRCodeType.Email:
                 <input class="w-full px-3 py-2 border border-gray-300 rounded-md" placeholder="Email" @bind="emailData.Email" />
-                <input class="w-full px-3 py-2 border border-gray-300 rounded-md" placeholder="Subject" @bind="emailData.Subject" />
-                <textarea class="w-full px-3 py-2 border border-gray-300 rounded-md" placeholder="Message" @bind="emailData.Body"></textarea>
+                <input class="w-full px-3 py-2 border border-gray-300 rounded-md" placeholder="Subject"
+                    @bind="emailData.Subject" />
+                <textarea class="w-full px-3 py-2 border border-gray-300 rounded-md" placeholder="Message"
+                    @bind="emailData.Body"></textarea>
                 break;
             case QRCodeType.VCard:
-                <input class="w-full px-3 py-2 border border-gray-300 rounded-md" placeholder="Full Name" @bind="vcardData.Name" />
-                <input class="w-full px-3 py-2 border border-gray-300 rounded-md" placeholder="Organization" @bind="vcardData.Org" />
+                <input class="w-full px-3 py-2 border border-gray-300 rounded-md" placeholder="Full Name"
+                    @bind="vcardData.Name" />
+                <input class="w-full px-3 py-2 border border-gray-300 rounded-md" placeholder="Organization"
+                    @bind="vcardData.Org" />
                 <input class="w-full px-3 py-2 border border-gray-300 rounded-md" placeholder="Title" @bind="vcardData.Title" />
                 <input class="w-full px-3 py-2 border border-gray-300 rounded-md" placeholder="Phone" @bind="vcardData.Phone" />
                 <input class="w-full px-3 py-2 border border-gray-300 rounded-md" placeholder="Email" @bind="vcardData.Email" />
                 <input class="w-full px-3 py-2 border border-gray-300 rounded-md" placeholder="Website" @bind="vcardData.Url" />
-                <input class="w-full px-3 py-2 border border-gray-300 rounded-md" placeholder="Address" @bind="vcardData.Address" />
+                <input class="w-full px-3 py-2 border border-gray-300 rounded-md" placeholder="Address"
+                    @bind="vcardData.Address" />
                 break;
             case QRCodeType.Text:
-                <textarea class="w-full px-3 py-2 border border-gray-300 rounded-md" placeholder="Enter text" @bind="textData.Text"></textarea>
+                <textarea class="w-full px-3 py-2 border border-gray-300 rounded-md" placeholder="Enter text"
+                    @bind="textData.Text"></textarea>
                 break;
             case QRCodeType.Wifi:
                 <input class="w-full px-3 py-2 border border-gray-300 rounded-md" placeholder="SSID" @bind="wifiData.SSID" />
-                <input class="w-full px-3 py-2 border border-gray-300 rounded-md" type="password" placeholder="Password" @bind="wifiData.Password" />
+                <input class="w-full px-3 py-2 border border-gray-300 rounded-md" type="password" placeholder="Password"
+                    @bind="wifiData.Password" />
                 <select class="w-full px-3 py-2 border border-gray-300 rounded-md" @bind="wifiData.Encryption">
                     <option value="WPA">WPA/WPA2</option>
                     <option value="WEP">WEP</option>
@@ -70,18 +82,23 @@
                 </select>
                 break;
             case QRCodeType.Phone:
-                <input class="w-full px-3 py-2 border border-gray-300 rounded-md" placeholder="Phone Number" @bind="phoneData.Number" />
+                <input class="w-full px-3 py-2 border border-gray-300 rounded-md" placeholder="Phone Number"
+                    @bind="phoneData.Number" />
                 break;
             case QRCodeType.Geo:
-                <input class="w-full px-3 py-2 border border-gray-300 rounded-md" placeholder="Latitude" @bind="geoData.Latitude" />
-                <input class="w-full px-3 py-2 border border-gray-300 rounded-md" placeholder="Longitude" @bind="geoData.Longitude" />
+                <input class="w-full px-3 py-2 border border-gray-300 rounded-md" placeholder="Latitude"
+                    @bind="geoData.Latitude" />
+                <input class="w-full px-3 py-2 border border-gray-300 rounded-md" placeholder="Longitude"
+                    @bind="geoData.Longitude" />
                 break;
         }
     </div>
 
     <div class="flex flex-col sm:flex-row sm:space-x-4 space-y-2 sm:space-y-0">
-        <button @onclick="GenerateQRCode" class="flex items-center justify-center px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition">
-            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <button @onclick="GenerateQRCode"
+            class="flex items-center justify-center px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 mr-2" fill="none" viewBox="0 0 24 24"
+                stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
             </svg>
             Generate
@@ -89,9 +106,12 @@
 
         @if (!string.IsNullOrWhiteSpace(_imageDataUrl))
         {
-            <button @onclick="SaveQRCode" class="flex items-center justify-center px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 transition">
-                <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v16h16V4H4zm4 6h8m-4 4h4" />
+            <button @onclick="SaveQRCode"
+                class="flex items-center justify-center px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 transition">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 mr-2" fill="none" viewBox="0 0 24 24"
+                    stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M4 4v16h16V4H4zm4 6h8m-4 4h4" />
                 </svg>
                 Save
             </button>
@@ -104,4 +124,5 @@
             <img src="@_imageDataUrl" alt="QR Code" class="mx-auto mt-6 max-w-xs rounded shadow-md" />
         </div>
     }
+
 </div>
