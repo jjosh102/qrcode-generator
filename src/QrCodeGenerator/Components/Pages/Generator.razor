@@ -1,0 +1,78 @@
+﻿@page "/"
+
+<PageTitle>QR Code Generator</PageTitle>
+
+<div class="max-w-2xl mx-auto p-6 space-y-6">
+    <h1 class="text-4xl font-bold text-center text-gray-800">QR Code Generator</h1>
+
+    <div class="space-y-4">
+        <label class="block text-lg font-medium text-gray-700">Select QR Code Type</label>
+        <select @bind="selectedType" class="w-full p-2 border border-gray-300 rounded-md">
+            @foreach (QRCodeType type in Enum.GetValues(typeof(QRCodeType)))
+            {
+                <option value="@type">@type</option>
+            }
+        </select>
+    </div>
+
+    <div class="space-y-4">
+        @switch (selectedType)
+        {
+            case QRCodeType.Url:
+                <input class="w-full p-2 border border-gray-300 rounded-md" placeholder="Enter URL" @bind="urlData.Url" />
+                break;
+            case QRCodeType.Sms:
+                <input class="w-full p-2 border border-gray-300 rounded-md" placeholder="Phone Number" @bind="smsData.Number" />
+                <input class="w-full p-2 border border-gray-300 rounded-md" placeholder="Message" @bind="smsData.Message" />
+                break;
+            case QRCodeType.Email:
+                <input class="w-full p-2 border border-gray-300 rounded-md" placeholder="Email Address" @bind="emailData.Email" />
+                <input class="w-full p-2 border border-gray-300 rounded-md" placeholder="Subject" @bind="emailData.Subject" />
+                <textarea class="w-full p-2 border border-gray-300 rounded-md" placeholder="Message" @bind="emailData.Body"></textarea>
+                break;
+            case QRCodeType.VCard:
+                <input class="w-full p-2 border border-gray-300 rounded-md" placeholder="Full Name" @bind="vcardData.Name" />
+                <input class="w-full p-2 border border-gray-300 rounded-md" placeholder="Organization" @bind="vcardData.Org" />
+                <input class="w-full p-2 border border-gray-300 rounded-md" placeholder="Title" @bind="vcardData.Title" />
+                <input class="w-full p-2 border border-gray-300 rounded-md" placeholder="Phone" @bind="vcardData.Phone" />
+                <input class="w-full p-2 border border-gray-300 rounded-md" placeholder="Email" @bind="vcardData.Email" />
+                <input class="w-full p-2 border border-gray-300 rounded-md" placeholder="Website" @bind="vcardData.Url" />
+                <input class="w-full p-2 border border-gray-300 rounded-md" placeholder="Address" @bind="vcardData.Address" />
+                break;
+            case QRCodeType.Text:
+                <textarea class="w-full p-2 border border-gray-300 rounded-md" placeholder="Enter plain text" @bind="textData.Text"></textarea>
+                break;
+            case QRCodeType.Wifi:
+                <input class="w-full p-2 border border-gray-300 rounded-md" placeholder="SSID" @bind="wifiData.SSID" />
+                <input type="password" class="w-full p-2 border border-gray-300 rounded-md" placeholder="Password" @bind="wifiData.Password" />
+                <select class="w-full p-2 border border-gray-300 rounded-md" @bind="wifiData.Encryption">
+                    <option value="WPA">WPA/WPA2</option>
+                    <option value="WEP">WEP</option>
+                    <option value="">None</option>
+                </select>
+                break;
+            case QRCodeType.Phone:
+                <input class="w-full p-2 border border-gray-300 rounded-md" placeholder="Phone Number" @bind="phoneData.Number" />
+                break;
+            case QRCodeType.Geo:
+                <input class="w-full p-2 border border-gray-300 rounded-md" placeholder="Latitude" @bind="geoData.Latitude" />
+                <input class="w-full p-2 border border-gray-300 rounded-md" placeholder="Longitude" @bind="geoData.Longitude" />
+                break;
+        }
+    </div>
+
+    <button @onclick="GenerateQRCode" class="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-md w-full">
+        Generate QR Code
+    </button>
+
+    @if (!string.IsNullOrWhiteSpace(imageDataUrl))
+    {
+        <div class="text-center">
+            <img src="@imageDataUrl" alt="QR Code" class="mx-auto rounded shadow-md mt-4" style="max-width: 200px; object-fit: contain;" />
+            <button @onclick="SaveQRCode" class="mt-4 bg-green-600 hover:bg-green-700 text-white py-2 px-4 rounded-md">
+                Save QR Code
+            </button>
+        </div>
+    }
+</div>
+
