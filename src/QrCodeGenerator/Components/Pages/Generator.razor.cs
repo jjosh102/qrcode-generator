@@ -109,7 +109,6 @@ public partial class Generator : ComponentBase
     vcardData.Name = vcardData.Org = vcardData.Title = vcardData.Phone = vcardData.Email = vcardData.Url = vcardData.Address = string.Empty;
     textData.Text = string.Empty;
     wifiData.SSID = wifiData.Password = string.Empty;
-    wifiData.Encryption = "WPA";
     phoneData.Number = string.Empty;
     geoData.Latitude = geoData.Longitude = string.Empty;
   }

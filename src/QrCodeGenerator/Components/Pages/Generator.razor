@@ -74,12 +74,20 @@
                 <input class="w-full px-3 py-2 border border-gray-300 rounded-md" placeholder="SSID" @bind="wifiData.SSID" />
                 <input class="w-full px-3 py-2 border border-gray-300 rounded-md" type="password" placeholder="Password"
                     @bind="wifiData.Password" />
-                <select class="w-full px-3 py-2 border border-gray-300 rounded-md" @bind="wifiData.Encryption">
-                    <option value="WPA">WPA/WPA2</option>
-                    <option value="WEP">WEP</option>
-                    <option value="">None</option>
+
+                <select class="w-full px-3 py-2 border border-gray-300 rounded-md" @bind="wifiData.AuthMode">
+                    @foreach (var auth in Enum.GetValues(typeof(WifiData.WifAuth)))
+                    {
+                        <option value="@auth">@auth</option>
+                    }
                 </select>
+
+                <label class="flex items-center space-x-2 mt-2">
+                    <input type="checkbox" class="form-checkbox h-4 w-4 text-blue-600" @bind="wifiData.IsHiddenSSID" />
+                    <span class="text-sm">Hidden SSID</span>
+                </label>
                 break;
+
             case QRCodeType.Phone:
                 <input class="w-full px-3 py-2 border border-gray-300 rounded-md" placeholder="Phone Number"
                     @bind="phoneData.Number" />
