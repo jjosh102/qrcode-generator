@@ -45,7 +45,7 @@ public partial class Generator : ComponentBase
   {
     _options =
         [
-            new(QRCodeType.Url, "URL", CreateIcon("M13.828 10.172a4 4 0 010 5.656l-1.414 1.414a4 4 0 01-5.656 0l-1.414-1.414a4 4 0 010-5.656M10.172 13.828a4 4 0 005.656 0l1.414-1.414a4 4 0 000-5.656l-1.414-1.414a4 4 0 00-5.656 0")),
+            new(QRCodeType.Url, "URL", CreateIcon("M13.828 10.172a4 4 0 0 1 0 5.656l-1.414 1.414a4 4 0 0 1-5.656 0l-1.414-1.414a4 4 0 0 1 0-5.656M10.172 13.828a4 4 0 0 0 5.656 0l1.414-1.414a4 4 0 0 0 0-5.656l-1.414-1.414a4 4 0 0 0-5.656 0")),
             new(QRCodeType.Sms, "SMS", CreateIcon("M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z")),
             new(QRCodeType.Email, "Email", CreateIcon("M4 4h16v16H4V4zm2 4l6 4 6-4")),
             new(QRCodeType.VCard, "VCard", CreateIcon("M4 6h16v12H4V6zm2 2v2h12V8H6zm0 4v2h8v-2H6z")),
@@ -128,7 +128,7 @@ public partial class Generator : ComponentBase
     {
       var bytes = Convert.FromBase64String(_imageDataUrl.Split(',')[1]);
       await _jsRuntime.InvokeVoidAsync("downloadFileFromBytes", $"{_fileName}.png", "image/png", bytes);
-      _showFilenameInput = false; 
+      _showFilenameInput = false;
     }
   }
 

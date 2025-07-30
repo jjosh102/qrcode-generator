@@ -3,7 +3,8 @@
 <PageTitle>QR Code Generator</PageTitle>
 
 <div class="max-w-2xl mx-auto px-4 py-8 space-y-6 text-gray-800">
-    <h1 class="text-3xl font-semibold text-center">QR Code Generator</h1>
+    <h1 class="text-4xl font-semibold text-center text-gray-900">QR Code Generator</h1>
+
     <div class="relative">
         <label class="block mb-2 text-sm font-medium">QR Code Type</label>
 
@@ -21,8 +22,7 @@
 
         @if (_dropdownOpen)
         {
-            <ul
-                class="absolute z-20 mt-1 w-full bg-white border border-gray-200 rounded-md shadow-lg max-h-60 overflow-auto">
+            <ul class="absolute z-20 mt-1 w-full bg-white border border-gray-200 rounded-md max-h-60 overflow-auto">
                 @foreach (var option in _options)
                 {
                     <li class="flex items-center gap-2 px-4 py-2 cursor-pointer hover:bg-gray-100"
@@ -34,7 +34,6 @@
             </ul>
         }
     </div>
-
 
     <div class="space-y-3">
         @switch (_selectedOption?.Type)
@@ -96,7 +95,7 @@
 
     <div class="flex flex-col sm:flex-row sm:space-x-4 space-y-2 sm:space-y-0">
         <button @onclick="GenerateQRCode"
-            class="flex items-center justify-center px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition">
+            class="flex items-center justify-center px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition-colors">
             <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 mr-2" fill="none" viewBox="0 0 24 24"
                 stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
@@ -107,7 +106,7 @@
         @if (!string.IsNullOrWhiteSpace(_imageDataUrl))
         {
             <button @onclick="() => _showFilenameInput = !_showFilenameInput"
-                class="flex items-center justify-center px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 transition">
+                class="flex items-center justify-center px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700 transition-colors">
                 <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 mr-2" fill="none" viewBox="0 0 24 24"
                     stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -121,11 +120,11 @@
     @if (_showFilenameInput)
     {
         <div class="mt-3 flex items-center space-x-2">
-            <input class="w-full sm:w-64 px-3 py-2 border border-gray-300 rounded-md"
+            <input class="w-full sm:w-64 px-3 py-2 border border-gray-300 rounded bg-white focus:ring-2 focus:ring-blue-500"
                 placeholder="Enter file name (e.g. qr-code)" @bind="_fileName" />
 
             <button @onclick="SaveQRCode"
-                class="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 transition">
+                class="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700 transition-colors">
                 Confirm
             </button>
         </div>
@@ -136,12 +135,10 @@
         }
     }
 
-
     @if (!string.IsNullOrWhiteSpace(_imageDataUrl))
     {
         <div class="text-center">
-            <img src="@_imageDataUrl" alt="QR Code" class="mx-auto mt-6 max-w-xs rounded shadow-md" />
+            <img src="@_imageDataUrl" alt="QR Code" class="mx-auto mt-6 max-w-xs rounded" />
         </div>
     }
-
 </div>
