@@ -22,6 +22,9 @@ public partial class Generator : ComponentBase
   private QRCodeOption? _selectedOption;
   private string _imageDataUrl = string.Empty;
   private bool _dropdownOpen = false;
+  private string _fileName = string.Empty;
+  private bool _showFilenameInput = false;
+  private string _errorMessage = string.Empty;
 
   private List<QRCodeOption> _options = [];
 
@@ -113,14 +116,21 @@ public partial class Generator : ComponentBase
 
   private async Task SaveQRCode()
   {
+    _errorMessage = string.Empty;
+
+    if (string.IsNullOrWhiteSpace(_fileName))
+    {
+      _errorMessage = "Please enter a file name before saving.";
+      return;
+    }
+
     if (!string.IsNullOrEmpty(_imageDataUrl))
     {
       var bytes = Convert.FromBase64String(_imageDataUrl.Split(',')[1]);
-      await _jsRuntime.InvokeVoidAsync("downloadFileFromBytes", "qrcode.png", "image/png", bytes);
+      await _jsRuntime.InvokeVoidAsync("downloadFileFromBytes", $"{_fileName}.png", "image/png", bytes);
+      _showFilenameInput = false; 
     }
   }
-
-  private void ToggleDropdown() => _dropdownOpen = !_dropdownOpen;
 
   private void SelectType(QRCodeOption option)
   {

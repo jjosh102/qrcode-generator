@@ -7,7 +7,7 @@
     <div class="relative">
         <label class="block mb-2 text-sm font-medium">QR Code Type</label>
 
-        <button @onclick="ToggleDropdown"
+        <button @onclick="() => _dropdownOpen = !_dropdownOpen"
             class="w-full flex items-center justify-between px-3 py-2 border border-gray-300 rounded-md bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500">
             <span class="flex items-center gap-2">
                 @_selectedOption?.Icon
@@ -106,7 +106,7 @@
 
         @if (!string.IsNullOrWhiteSpace(_imageDataUrl))
         {
-            <button @onclick="SaveQRCode"
+            <button @onclick="() => _showFilenameInput = !_showFilenameInput"
                 class="flex items-center justify-center px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 transition">
                 <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 mr-2" fill="none" viewBox="0 0 24 24"
                     stroke="currentColor">
@@ -117,6 +117,25 @@
             </button>
         }
     </div>
+
+    @if (_showFilenameInput)
+    {
+        <div class="mt-3 flex items-center space-x-2">
+            <input class="w-full sm:w-64 px-3 py-2 border border-gray-300 rounded-md"
+                placeholder="Enter file name (e.g. qr-code)" @bind="_fileName" />
+
+            <button @onclick="SaveQRCode"
+                class="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 transition">
+                Confirm
+            </button>
+        </div>
+
+        @if (!string.IsNullOrWhiteSpace(_errorMessage))
+        {
+            <div class="text-sm text-red-600 mt-1">@_errorMessage</div>
+        }
+    }
+
 
     @if (!string.IsNullOrWhiteSpace(_imageDataUrl))
     {
